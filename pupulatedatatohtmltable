@@ -1,0 +1,108 @@
+<?php $curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://api.clickmayora.com/MySMSOtp/api/Currenncy', 
+    CURLOPT_RETURNTRANSFER => true, 
+    CURLOPT_ENCODING => '', 
+    CURLOPT_MAXREDIRS => 10, 
+    CURLOPT_TIMEOUT => 0, 
+    CURLOPT_FOLLOWLOCATION => true, 
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1, 
+    CURLOPT_CUSTOMREQUEST => 'POST', 
+    CURLOPT_POSTFIELDS => 'username=ichwan&password=ichone&senderid=BANK%20MAYORA', 
+    CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/x-www-form-urlencoded'
+    ),
+));
+$response = curl_exec($curl);
+$decoded_json = json_decode($response, true);
+
+
+
+$data = $decoded_json['data']; 
+
+
+// $data = $decoded_json['TT_Buy']; 
+// $data = $decoded_json['TT_Sell']; 
+
+// foreach($data as $d) { 
+// echo ($d['Currency']);
+// echo ($d['TT_Buy']); 
+// echo ($d['TT_Sell']);  // } curl_close($curl); //var_dump($response);
+// }
+
+
+
+
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+table, td, th {
+  border: 1px solid;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th{
+    background-color: yellow;
+}
+</style>
+</head>
+<body>
+
+
+<?php 
+$table = ';
+<table>
+	<tr>
+		<th>Mata Uang</th>
+		<th>Beli(Rp)</th>
+		<th>Jual(Rp)</th>
+	</tr>';
+    foreach ($data as $d) {
+	$table .= '
+	<tr>
+		<td>' . ($d['Currency']). '</td>
+		<td>' . ($d['TT_Buy']) . '</td>
+		<td>' . ($d['TT_Sell']) . '</td>
+	</tr>';
+
+}
+$table .= '</table>';
+echo $table;
+ ?>
+
+
+
+<table>
+	<tr>
+		<th>Mata Uang</th>
+		<th>Beli</th>
+		<th>Jual</th>
+	</tr>
+
+<?php foreach ($data as $d) : ?>
+<tr>
+<td><?=($d['Currency']) ?></td>
+<td><?= ($d['TT_Buy']) ?></td>
+<td><?=($d['TT_Sell']) ?></td>
+</tr>
+<?php endforeach; ?>
+
+</table>
+
+
+
+
+</body>
+</html>
